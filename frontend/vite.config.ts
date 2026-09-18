@@ -8,5 +8,5 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  base: '/EnergyTwin/',
+  base: './', // Відносний шлях усуває будь-які баги з назвою репозиторію
 })

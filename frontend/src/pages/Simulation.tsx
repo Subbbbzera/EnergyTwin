@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { Play, ArrowRight, Lightbulb } from 'lucide-react';
 
 export function Simulation() {
@@ -51,13 +51,10 @@ export function Simulation() {
   const peakCoverage = Math.min(100, Math.round((totalPower / peakLoad) * 100));
 
   const accentColor = isEnough ? '#22C55E' : '#EF4444';
-  const accentClass = isEnough ? 'text-et-success' : 'text-et-danger';
   const accentBgClass = isEnough ? 'bg-et-success' : 'bg-et-danger';
-  const accentBgMutedClass = isEnough ? 'bg-et-success/20' : 'bg-et-danger/20';
 
   // SVG coordinates calculations
   // X axis: 0 to 1000 represents the `duration` hours.
-  const endOutageTime = startTime + duration;
   
   // Base line
   const baseDischargeRatio = Math.min(1, autonomyHours / duration);

@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Sidebar } from './Sidebar';
-import { Dashboard } from './Dashboard';
-import { Simulation } from './Simulation';
+import { Sidebar } from './components/layout/Sidebar';
+import { Dashboard } from './pages/Dashboard';
+import { Simulation } from './pages/Simulation';
 import './index.css';
 
 function App() {

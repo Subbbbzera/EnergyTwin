@@ -242,7 +242,7 @@ export function Simulation() {
       {/* Bottom Card: What-If */}
       <div className="bg-et-bg border border-et-accent/40 rounded-2xl p-6">
         <div className="flex justify-between items-center mb-6">
-          <div className="text-et-muted text-xs font-bold tracking-widest uppercase">КОНСТРУКТОР СЦЕНАРІЇВ WHAT-IF</div>
+          <div className="text-et-accent text-xs font-bold tracking-widest uppercase">КОНСТРУКТОР СЦЕНАРІЇВ WHAT-IF</div>
           <div className="text-sm text-et-text">
             Поточна автономність: <span className="font-space font-medium">{formatTime(autonomyHours)}</span> · 
             дефіцит: <span className="font-space font-medium text-et-danger">{formatTime(downtimeHours)}</span>
@@ -251,54 +251,54 @@ export function Simulation() {
 
         <div className="space-y-4 mb-6">
           {/* Row 1 */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-6 bg-et-card border border-et-border rounded-xl p-4">
             <div className="w-[140px] text-sm text-et-text font-medium">+ Батарея LiFePO4</div>
-            <div className="flex gap-2 bg-et-block p-1 rounded-lg">
+            <div className="flex gap-2">
               {[0, 2.5, 5, 10].map(v => (
-                <button key={v} onClick={() => setAddedBat(v)} className={`px-4 py-1.5 rounded-md text-sm transition-colors ${addedBat === v ? 'bg-et-card text-et-text font-medium shadow-sm' : 'text-et-muted hover:text-et-text'}`}>
+                <button key={v} onClick={() => setAddedBat(v)} className={`px-4 py-1.5 rounded-md text-sm transition-colors border ${addedBat === v ? 'bg-et-accent border-et-accent text-et-bg font-medium' : 'bg-et-block border-et-border text-et-muted hover:text-et-text'}`}>
                   {v === 0 ? 'Без' : `+${v}`}
                 </button>
               ))}
             </div>
-            <ArrowRight className="text-et-border" size={16} />
-            <div className="text-sm text-et-text">
+            <ArrowRight className="text-et-border ml-auto" size={16} />
+            <div className="text-sm text-et-text w-[220px]">
               Нова автономність: <span className="font-space font-medium text-et-success">{formatTime(whatIfAutonomy)}</span>
             </div>
           </div>
 
           {/* Row 2 */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-6 bg-et-card border border-et-border rounded-xl p-4">
             <div className="w-[140px] text-sm text-et-text font-medium">+ Генератор</div>
-            <div className="flex gap-2 bg-et-block p-1 rounded-lg">
+            <div className="flex gap-2">
               {[0, 3.0, 5.5].map(v => (
-                <button key={v} onClick={() => setAddedGen(v)} className={`px-4 py-1.5 rounded-md text-sm transition-colors ${addedGen === v ? 'bg-et-card text-et-text font-medium shadow-sm' : 'text-et-muted hover:text-et-text'}`}>
+                <button key={v} onClick={() => setAddedGen(v)} className={`px-4 py-1.5 rounded-md text-sm transition-colors border ${addedGen === v ? 'bg-et-accent border-et-accent text-et-bg font-medium' : 'bg-et-block border-et-border text-et-muted hover:text-et-text'}`}>
                   {v === 0 ? 'Немає' : `${v} кВт`}
                 </button>
               ))}
             </div>
-            <ArrowRight className="text-et-border" size={16} />
-            <div className="text-sm text-et-text">
+            <ArrowRight className="text-et-border ml-auto" size={16} />
+            <div className="text-sm text-et-text w-[220px]">
               Покриття піків: <span className="font-space font-medium text-et-success">{peakCoverage}%</span>
             </div>
           </div>
 
           {/* Row 3 */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-6 bg-et-card border border-et-border rounded-xl p-4">
             <div className="w-[140px] text-sm text-et-text font-medium">Smart Shedding</div>
-            <div className="flex gap-2 bg-et-block p-1 rounded-lg">
+            <div className="flex gap-2">
               {[
                 { id: 'none', label: 'Без змін' },
                 { id: 'showcase', label: 'Пауза вітрини' },
                 { id: 'grinder', label: 'Гриндер на вимогу' },
                 { id: 'both', label: 'Обидва' }
               ].map(opt => (
-                <button key={opt.id} onClick={() => setShedding(opt.id)} className={`px-4 py-1.5 rounded-md text-sm transition-colors ${shedding === opt.id ? 'bg-et-card text-et-text font-medium shadow-sm' : 'text-et-muted hover:text-et-text'}`}>
+                <button key={opt.id} onClick={() => setShedding(opt.id)} className={`px-4 py-1.5 rounded-md text-sm transition-colors border ${shedding === opt.id ? 'bg-et-accent border-et-accent text-et-bg font-medium' : 'bg-et-block border-et-border text-et-muted hover:text-et-text'}`}>
                   {opt.label}
                 </button>
               ))}
             </div>
-            <ArrowRight className="text-et-border" size={16} />
-            <div className="text-sm text-et-text">
+            <ArrowRight className="text-et-border ml-auto" size={16} />
+            <div className="text-sm text-et-text w-[220px]">
               Економія заряду: <span className="font-space font-medium text-et-success">{sheddingReduction > 0 ? `-${sheddingReduction.toFixed(2)} кВт` : '0 кВт'}</span>
             </div>
           </div>

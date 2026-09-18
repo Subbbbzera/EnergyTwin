@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@theme {
+  --color-et-bg: #0B0D12;
+  --color-et-card: #161B22;
+  --color-et-block: #1E2530;
+  --color-et-border: #2B3444;
+  --color-et-accent: #F5B700;
+  --color-et-success: #22C55E;
+  --color-et-danger: #EF4444;
+  --color-et-text: #F5F5F7;
+  --color-et-muted: #9CA3AF;
+  
+  --font-space: "Space Grotesk", sans-serif;
+  --font-plex: "IBM Plex Sans", sans-serif;
+}
+
+body {
+  background-color: var(--color-et-bg);
+  color: var(--color-et-text);
+  font-family: var(--font-plex);
+}

@@ -1,15 +1,19 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Sidebar } from './components/layout/Sidebar';
 import { Dashboard } from './pages/Dashboard';
 import { Simulation } from './pages/Simulation';
+import { FeedbackModal } from './components/feedback/FeedbackModal';
 import './index.css';
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const closeFeedback = useCallback(() => setFeedbackOpen(false), []);
 
   return (
     <div className="flex h-screen bg-et-bg text-et-text overflow-hidden">
-      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} onFeedbackClick={() => setFeedbackOpen(true)} />
+      {feedbackOpen && <FeedbackModal page={activeTab} onClose={closeFeedback} />}
       {activeTab === 'dashboard' && <Dashboard />}
       {activeTab === 'simulation' && <Simulation />}
       

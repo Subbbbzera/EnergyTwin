@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Play, ArrowRight, Lightbulb } from 'lucide-react';
+import { Play, ArrowRight, Lightbulb, Fuel, Leaf, Users } from 'lucide-react';
+import { SimulationFeedback } from '../components/feedback/SimulationFeedback';
 
 export function Simulation() {
   const [startTime, setStartTime] = useState<number>(14);
@@ -10,6 +11,7 @@ export function Simulation() {
   const [addedBat, setAddedBat] = useState<number>(0);
   const [addedGen, setAddedGen] = useState<number>(0);
   const [shedding, setShedding] = useState<string>('none');
+  const [simRun, setSimRun] = useState<boolean>(false);
 
   // Logic
   const baseBattery = 2.0;
@@ -39,8 +41,8 @@ export function Simulation() {
   // What-If logic
   const whatIfBattery = baseBattery + addedBat;
   const sheddingReduction = 
-    (shedding === 'showcase' || shedding === 'both' ? 0.2 : 0) +
-    (shedding === 'grinder' || shedding === 'both' ? 0.15 : 0);
+    (shedding === 'showcase' || shedding === 'both' ? 0.15 : 0) +
+    (shedding === 'grinder' || shedding === 'both' ? 0.3 : 0);
   
   const whatIfLoad = currentLoad - sheddingReduction;
   const whatIfAutonomy = whatIfBattery / whatIfLoad;
@@ -49,6 +51,19 @@ export function Simulation() {
   const inverterBase = 3.0;
   const totalPower = inverterBase + addedGen;
   const peakCoverage = Math.min(100, Math.round((totalPower / peakLoad) * 100));
+
+  // Сталий ефект (орієнтовний розрахунок на місяць)
+  const outagesPerMonth = 20;
+  const dailyPeak = 4.2; // пік добового профілю навантаження (Dashboard)
+  const fuelPerKwh = 0.35; // л/кВт·год
+  const co2PerLiter = 2.6; // кг CO₂ на 1 л палива
+  // Надлишок генератора: потужність понад пік навантаження (5.5 кВт → 1.3 кВт, 3 кВт → 0)
+  const generatorSurplus = addedGen > dailyPeak ? (addedGen - dailyPeak) * duration * outagesPerMonth * 0.1 : 0;
+  const fuelSaved = (sheddingReduction * duration * outagesPerMonth + generatorSurplus) * fuelPerKwh;
+  const co2Saved = fuelSaved * co2PerLiter;
+  // Додана автономність рахується лише в межах відключення — понад нього робочі години не рятуються
+  const addedAutonomy = Math.max(0, Math.min(whatIfAutonomy, duration) - Math.min(autonomyHours, duration));
+  const workHoursSaved = addedAutonomy * outagesPerMonth;
 
   const accentColor = isEnough ? '#22C55E' : '#EF4444';
   const accentBgClass = isEnough ? 'bg-et-success' : 'bg-et-danger';
@@ -134,7 +149,7 @@ export function Simulation() {
             </div>
           </div>
 
-          <button className="w-full bg-et-accent text-et-bg font-bold py-3.5 rounded-[10px] flex justify-center items-center gap-2 hover:bg-[#F5B700]/90 transition-colors">
+          <button onClick={() => setSimRun(true)} className="w-full bg-et-accent text-et-bg font-bold py-3.5 rounded-[10px] flex justify-center items-center gap-2 hover:bg-[#F5B700]/90 transition-colors">
             <Play size={18} fill="currentColor" />
             Запустити симуляцію
           </button>
@@ -239,6 +254,9 @@ export function Simulation() {
         </div>
       </div>
 
+      {/* Feedback after simulation run */}
+      {simRun && <SimulationFeedback />}
+
       {/* Bottom Card: What-If */}
       <div className="bg-et-bg border border-et-accent/40 rounded-2xl p-6">
         <div className="flex justify-between items-center mb-6">
@@ -310,6 +328,36 @@ export function Simulation() {
             <span className="font-medium">Smart Shedding:</span> якщо ставити вітрину на паузу в пік і вмикати гриндер лише під замовлення, поточного резерву вистачить ще на ~50 хв.
           </div>
         </div>
+      </div>
+
+      {/* Sustainability Card */}
+      <div className="mt-6 bg-et-bg border border-et-success/40 rounded-2xl p-6">
+        <div className="text-et-success text-xs font-bold tracking-widest uppercase mb-4">🌱 Сталий ефект</div>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-et-card border border-et-border rounded-xl p-4 flex items-start gap-3">
+            <Fuel className="text-et-success shrink-0 mt-0.5" size={18} />
+            <div>
+              <div className="text-xs text-et-muted mb-1">Зекономлено палива</div>
+              <div className="font-space font-medium text-lg text-et-success">~{Math.round(fuelSaved)} л/міс</div>
+            </div>
+          </div>
+          <div className="bg-et-card border border-et-border rounded-xl p-4 flex items-start gap-3">
+            <Leaf className="text-et-success shrink-0 mt-0.5" size={18} />
+            <div>
+              <div className="text-xs text-et-muted mb-1">Менше CO₂</div>
+              <div className="font-space font-medium text-lg text-et-success">~{Math.round(co2Saved)} кг/міс</div>
+            </div>
+          </div>
+          <div className="bg-et-card border border-et-border rounded-xl p-4 flex items-start gap-3">
+            <Users className="text-et-success shrink-0 mt-0.5" size={18} />
+            <div>
+              <div className="text-xs text-et-muted mb-1">Робочих годин збережено</div>
+              <div className="font-space font-medium text-lg text-et-success">~{Math.round(workHoursSaved)} год/міс</div>
+              <div className="text-xs text-et-muted mt-1">Бізнес відкритий — люди не втрачають зміну</div>
+            </div>
+          </div>
+        </div>
+        <div className="text-xs text-et-muted mt-4">Орієнтовний розрахунок для прототипу</div>
       </div>
     </div>
   );

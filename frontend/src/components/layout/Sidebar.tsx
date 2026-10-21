@@ -1,11 +1,12 @@
-import { Zap, LayoutDashboard, Server, Activity, Sliders, Info, List, Bell, Settings } from 'lucide-react';
+import { Zap, LayoutDashboard, Server, Activity, Sliders, Info, List, Bell, Settings, MessageSquare } from 'lucide-react';
 
 interface SidebarProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
+  onFeedbackClick?: () => void;
 }
 
-export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
+export function Sidebar({ activeTab, setActiveTab, onFeedbackClick }: SidebarProps) {
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'equipment', label: 'Техніка', icon: Server },
@@ -14,6 +15,7 @@ export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
     { id: 'recommendations', label: 'Рекомендації', icon: Info },
     { id: 'catalog', label: 'Каталог', icon: List },
     { id: 'alerts', label: 'Сповіщення', icon: Bell, badge: 3 },
+    { id: 'feedback', label: 'Залишити відгук', icon: MessageSquare },
     { id: 'settings', label: 'Налаштування', icon: Settings },
   ];
 
@@ -33,7 +35,7 @@ export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
           return (
             <button
               key={item.id}
-              onClick={() => setActiveTab(item.id)}
+              onClick={() => (item.id === 'feedback' && onFeedbackClick ? onFeedbackClick() : setActiveTab(item.id))}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-[10px] transition-colors text-sm font-medium ${
                 isActive 
                   ? 'bg-et-accent/12 text-et-accent' 

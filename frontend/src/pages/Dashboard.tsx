@@ -1,4 +1,5 @@
 import { ChevronDown, MapPin, Bell, ArrowRight } from 'lucide-react';
+import { ForecastFeedback } from '../components/feedback/ForecastFeedback';
 
 export function Dashboard() {
   return (
@@ -34,6 +35,7 @@ export function Dashboard() {
             <span className="font-space font-semibold text-base mr-2">14:00–18:00 (4 години)</span>
             — резерву вистачить на 1 год 50 хв (розряд о 15:50)
           </div>
+          <ForecastFeedback />
         </div>
         <button className="bg-et-accent text-et-bg font-medium px-5 py-2.5 rounded-[10px] flex items-center gap-2 hover:bg-[#F5B700]/90 transition-colors">
           Відкрити симулятор <ArrowRight size={18} />

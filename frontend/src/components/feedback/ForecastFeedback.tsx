@@ -13,7 +13,7 @@ export function ForecastFeedback() {
   };
 
   return (
-    <div className="flex items-center gap-3 mt-3 text-sm">
+    <div className="flex flex-wrap items-center gap-3 mt-3 text-sm">
       <span className={vote ? 'text-et-text' : 'text-et-muted'}>
         {vote ? 'Дякуємо! Це покращує прогноз' : 'Прогноз 14:00–18:00 точний?'}
       </span>

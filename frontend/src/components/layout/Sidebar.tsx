@@ -4,9 +4,11 @@ interface SidebarProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   onFeedbackClick?: () => void;
+  mobileOpen?: boolean;
+  onMobileClose?: () => void;
 }
 
-export function Sidebar({ activeTab, setActiveTab, onFeedbackClick }: SidebarProps) {
+export function Sidebar({ activeTab, setActiveTab, onFeedbackClick, mobileOpen = false, onMobileClose }: SidebarProps) {
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'equipment', label: 'Техніка', icon: Server },
@@ -20,7 +22,10 @@ export function Sidebar({ activeTab, setActiveTab, onFeedbackClick }: SidebarPro
   ];
 
   return (
-    <aside className="w-[216px] h-screen border-r border-et-border bg-et-bg flex flex-col shrink-0">
+    <>
+    {/* Mobile overlay */}
+    {mobileOpen && <div className="lg:hidden fixed inset-0 z-30 bg-black/60" onClick={onMobileClose} />}
+    <aside className={`w-[216px] h-dvh border-r border-et-border bg-et-bg flex flex-col shrink-0 fixed inset-y-0 left-0 z-40 transition-transform lg:static lg:translate-x-0 ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}`}>
       <div className="p-6 flex items-center gap-3">
         <div className="w-8 h-8 rounded bg-et-accent text-et-bg flex items-center justify-center">
           <Zap size={20} fill="currentColor" />
@@ -35,7 +40,11 @@ export function Sidebar({ activeTab, setActiveTab, onFeedbackClick }: SidebarPro
           return (
             <button
               key={item.id}
-              onClick={() => (item.id === 'feedback' && onFeedbackClick ? onFeedbackClick() : setActiveTab(item.id))}
+              onClick={() => {
+                if (item.id === 'feedback' && onFeedbackClick) onFeedbackClick();
+                else setActiveTab(item.id);
+                onMobileClose?.();
+              }}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-[10px] transition-colors text-sm font-medium ${
                 isActive 
                   ? 'bg-et-accent/12 text-et-accent' 
@@ -66,5 +75,6 @@ export function Sidebar({ activeTab, setActiveTab, onFeedbackClick }: SidebarPro
         </div>
       </div>
     </aside>
+    </>
   );
 }

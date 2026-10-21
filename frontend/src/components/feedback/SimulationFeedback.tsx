@@ -27,7 +27,7 @@ export function SimulationFeedback() {
       ) : (
         <div className="bg-et-card border border-et-border rounded-2xl p-6 mb-6">
           <div className="text-sm text-et-text font-medium mb-4">Чи допомогла симуляція обрати резерв?</div>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-4">
             <div className="flex gap-2">
               {[1, 2, 3, 4, 5].map(n => (
                 <button
@@ -50,7 +50,7 @@ export function SimulationFeedback() {
             <button
               onClick={handleSubmit}
               disabled={rating === null}
-              className="bg-et-accent text-et-bg font-medium px-5 py-2.5 rounded-[10px] flex items-center gap-2 hover:bg-[#F5B700]/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="bg-et-accent text-et-bg font-medium px-5 py-2.5 rounded-[10px] flex items-center justify-center gap-2 hover:bg-[#F5B700]/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <Send size={16} />
               Надіслати

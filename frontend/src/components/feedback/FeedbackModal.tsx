@@ -79,12 +79,12 @@ export function FeedbackModal({ page, onClose }: FeedbackModalProps) {
 
         <div className="mb-4">
           <div className="text-sm text-et-text mb-2">Тип бізнесу</div>
-          <div className="flex gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {BUSINESS_TYPES.map(t => (
               <button
                 key={t}
                 onClick={() => { setBusinessType(t); setSent(false); }}
-                className={`flex-1 py-2 rounded-[10px] text-sm transition-colors ${businessType === t ? 'bg-et-accent text-et-bg font-bold' : 'bg-et-block text-et-muted hover:text-et-text'}`}
+                className={`py-2 rounded-[10px] text-sm transition-colors ${businessType === t ? 'bg-et-accent text-et-bg font-bold' : 'bg-et-block text-et-muted hover:text-et-text'}`}
               >
                 {t}
               </button>
@@ -131,7 +131,7 @@ export function FeedbackModal({ page, onClose }: FeedbackModalProps) {
               <button onClick={handleClear} className="text-xs text-et-muted hover:text-et-danger transition-colors">Очистити</button>
             )}
           </div>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-2 sm:gap-3">
             <div className="bg-et-block rounded-[10px] p-3 text-center">
               <div className="text-xs text-et-muted mb-1">Усього</div>
               <div className="font-space font-medium text-lg text-et-text">{stats.total}</div>

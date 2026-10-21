@@ -3,12 +3,12 @@ import { ForecastFeedback } from '../components/feedback/ForecastFeedback';
 
 export function Dashboard() {
   return (
-    <div className="flex-1 overflow-auto bg-et-bg p-8">
+    <div className="flex-1 overflow-auto bg-et-bg p-4 lg:p-8">
       {/* Header */}
-      <header className="flex justify-between items-center mb-8">
-        <div className="flex items-center gap-4">
+      <header className="flex justify-between items-start lg:items-center gap-4 mb-6 lg:mb-8">
+        <div className="flex flex-wrap items-center gap-2 lg:gap-4">
           <div className="flex items-center gap-2 cursor-pointer hover:opacity-80">
-            <h1 className="font-space font-semibold text-2xl text-et-text">Кав'ярня «Central»</h1>
+            <h1 className="font-space font-semibold text-xl lg:text-2xl text-et-text">Кав'ярня «Central»</h1>
             <ChevronDown size={20} className="text-et-muted" />
           </div>
           <div className="flex items-center gap-1.5 text-et-muted text-sm bg-et-block px-3 py-1.5 rounded-full">
@@ -16,7 +16,7 @@ export function Dashboard() {
             Тернопіль
           </div>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 shrink-0">
           <div className="relative cursor-pointer text-et-muted hover:text-et-text">
             <Bell size={20} />
             <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-et-danger text-white text-[10px] font-bold flex items-center justify-center rounded-full">3</span>
@@ -28,7 +28,7 @@ export function Dashboard() {
       </header>
 
       {/* Red Banner */}
-      <div className="bg-et-danger/10 border border-et-danger/45 rounded-2xl p-4 mb-6 flex justify-between items-center">
+      <div className="bg-et-danger/10 border border-et-danger/45 rounded-2xl p-4 mb-6 flex flex-col lg:flex-row gap-4 justify-between lg:items-center">
         <div>
           <div className="text-et-danger text-xs font-bold tracking-widest uppercase mb-1">НАСТУПНЕ ВІДКЛЮЧЕННЯ · СЬОГОДНІ</div>
           <div className="text-et-text text-sm">
@@ -37,13 +37,13 @@ export function Dashboard() {
           </div>
           <ForecastFeedback />
         </div>
-        <button className="bg-et-accent text-et-bg font-medium px-5 py-2.5 rounded-[10px] flex items-center gap-2 hover:bg-[#F5B700]/90 transition-colors">
+        <button className="bg-et-accent text-et-bg font-medium px-5 py-2.5 rounded-[10px] flex items-center justify-center gap-2 hover:bg-[#F5B700]/90 transition-colors shrink-0">
           Відкрити симулятор <ArrowRight size={18} />
         </button>
       </div>
 
       {/* 3 Cards Row */}
-      <div className="grid grid-cols-3 gap-6 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 mb-6">
         {/* Card 1 */}
         <div className="bg-et-card border border-et-border rounded-2xl p-6">
           <div className="text-et-muted text-xs font-bold tracking-widest uppercase mb-4">ENERGYTWIN SCORE</div>
@@ -116,10 +116,10 @@ export function Dashboard() {
       </div>
 
       {/* Bottom Row */}
-      <div className="grid grid-cols-[2fr_1fr] gap-6 min-h-[340px]">
+      <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4 lg:gap-6 min-h-[340px]">
         {/* Graph Card */}
-        <div className="bg-et-card border border-et-border rounded-2xl p-6 relative flex flex-col">
-          <div className="flex justify-between items-start mb-6 relative z-10">
+        <div className="bg-et-card border border-et-border rounded-2xl p-6 relative flex flex-col min-h-[300px]">
+          <div className="flex flex-wrap gap-3 justify-between items-start mb-6 relative z-10">
             <div className="text-et-muted text-xs font-bold tracking-widest uppercase">ДОБОВИЙ ПРОФІЛЬ НАВАНТАЖЕННЯ</div>
             <div className="flex items-center gap-4 text-xs font-medium">
               <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-et-muted"></div><span className="text-et-muted">кВт</span></div>

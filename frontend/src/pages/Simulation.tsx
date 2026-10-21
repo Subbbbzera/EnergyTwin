@@ -80,16 +80,16 @@ export function Simulation() {
   const whatIfX = whatIfDischargeRatio * 1000;
 
   return (
-    <div className="flex-1 overflow-auto bg-et-bg p-8 flex flex-col min-h-screen">
+    <div className="flex-1 overflow-auto bg-et-bg p-4 lg:p-8 flex flex-col lg:min-h-screen">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="font-space font-semibold text-2xl text-et-text mb-1">Симулятор розряду та сценаріїв блекауту</h1>
+        <h1 className="font-space font-semibold text-xl lg:text-2xl text-et-text mb-1">Симулятор розряду та сценаріїв блекауту</h1>
         <p className="text-et-muted text-sm">Кав'ярня «Central» · зміни параметрів перераховуються одразу</p>
       </div>
 
-      <div className="flex gap-6 mb-6">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 mb-6">
         {/* Left Card: Params */}
-        <div className="w-[340px] bg-et-card border border-et-border rounded-2xl p-6 flex flex-col shrink-0">
+        <div className="w-full lg:w-[340px] bg-et-card border border-et-border rounded-2xl p-6 flex flex-col shrink-0">
           <div className="text-et-muted text-xs font-bold tracking-widest uppercase mb-5">ПАРАМЕТРИ ТЕСТУВАННЯ</div>
           
           <div className="mb-5">
@@ -159,7 +159,7 @@ export function Simulation() {
         <div className="flex-1 bg-et-card border border-et-border rounded-2xl p-6 flex flex-col">
           <div className="text-et-muted text-xs font-bold tracking-widest uppercase mb-4">ДІАГРАМА РОЗРЯДУ БАТАРЕЇ У ЧАСІ</div>
           
-          <div className="flex-1 relative mt-2 mb-8 ml-8">
+          <div className="flex-1 relative mt-2 mb-8 ml-8 min-h-[200px]">
             {/* Y Axis */}
             <div className="absolute -left-8 top-0 bottom-6 w-6 flex flex-col justify-between text-xs text-et-muted font-space pointer-events-none z-10 text-right">
               <span>100%</span><span>75%</span><span>50%</span><span>25%</span><span>0%</span>
@@ -231,7 +231,7 @@ export function Simulation() {
           </div>
 
           {/* Bottom mini-cards */}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 lg:gap-4">
             <div className="bg-et-block rounded-[10px] p-4 text-center">
               <div className="text-xs text-et-muted mb-1">Статус батареї</div>
               <div className={`font-space font-medium text-lg ${isEnough ? 'text-et-success' : 'text-et-danger'}`}>
@@ -258,8 +258,8 @@ export function Simulation() {
       {simRun && <SimulationFeedback />}
 
       {/* Bottom Card: What-If */}
-      <div className="bg-et-bg border border-et-accent/40 rounded-2xl p-6">
-        <div className="flex justify-between items-center mb-6">
+      <div className="bg-et-bg border border-et-accent/40 rounded-2xl p-4 lg:p-6">
+        <div className="flex flex-col lg:flex-row gap-2 justify-between lg:items-center mb-6">
           <div className="text-et-accent text-xs font-bold tracking-widest uppercase">КОНСТРУКТОР СЦЕНАРІЇВ WHAT-IF</div>
           <div className="text-sm text-et-text">
             Поточна автономність: <span className="font-space font-medium">{formatTime(autonomyHours)}</span> · 
@@ -269,41 +269,41 @@ export function Simulation() {
 
         <div className="space-y-4 mb-6">
           {/* Row 1 */}
-          <div className="flex items-center gap-6 bg-et-card border border-et-border rounded-xl p-4">
-            <div className="w-[140px] text-sm text-et-text font-medium">+ Батарея LiFePO4</div>
-            <div className="flex gap-2">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center gap-3 lg:gap-6 bg-et-card border border-et-border rounded-xl p-4">
+            <div className="lg:w-[140px] text-sm text-et-text font-medium">+ Батарея LiFePO4</div>
+            <div className="flex flex-wrap gap-2">
               {[0, 2.5, 5, 10].map(v => (
                 <button key={v} onClick={() => setAddedBat(v)} className={`px-4 py-1.5 rounded-md text-sm transition-colors border ${addedBat === v ? 'bg-et-accent border-et-accent text-et-bg font-medium' : 'bg-et-block border-et-border text-et-muted hover:text-et-text'}`}>
                   {v === 0 ? 'Без' : `+${v}`}
                 </button>
               ))}
             </div>
-            <ArrowRight className="text-et-border ml-auto" size={16} />
-            <div className="text-sm text-et-text w-[220px]">
+            <ArrowRight className="text-et-border ml-auto hidden lg:block" size={16} />
+            <div className="text-sm text-et-text lg:w-[220px]">
               Нова автономність: <span className="font-space font-medium text-et-success">{formatTime(whatIfAutonomy)}</span>
             </div>
           </div>
 
           {/* Row 2 */}
-          <div className="flex items-center gap-6 bg-et-card border border-et-border rounded-xl p-4">
-            <div className="w-[140px] text-sm text-et-text font-medium">+ Генератор</div>
-            <div className="flex gap-2">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center gap-3 lg:gap-6 bg-et-card border border-et-border rounded-xl p-4">
+            <div className="lg:w-[140px] text-sm text-et-text font-medium">+ Генератор</div>
+            <div className="flex flex-wrap gap-2">
               {[0, 3.0, 5.5].map(v => (
                 <button key={v} onClick={() => setAddedGen(v)} className={`px-4 py-1.5 rounded-md text-sm transition-colors border ${addedGen === v ? 'bg-et-accent border-et-accent text-et-bg font-medium' : 'bg-et-block border-et-border text-et-muted hover:text-et-text'}`}>
                   {v === 0 ? 'Немає' : `${v} кВт`}
                 </button>
               ))}
             </div>
-            <ArrowRight className="text-et-border ml-auto" size={16} />
-            <div className="text-sm text-et-text w-[220px]">
+            <ArrowRight className="text-et-border ml-auto hidden lg:block" size={16} />
+            <div className="text-sm text-et-text lg:w-[220px]">
               Покриття піків: <span className="font-space font-medium text-et-success">{peakCoverage}%</span>
             </div>
           </div>
 
           {/* Row 3 */}
-          <div className="flex items-center gap-6 bg-et-card border border-et-border rounded-xl p-4">
-            <div className="w-[140px] text-sm text-et-text font-medium">Smart Shedding</div>
-            <div className="flex gap-2">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center gap-3 lg:gap-6 bg-et-card border border-et-border rounded-xl p-4">
+            <div className="lg:w-[140px] text-sm text-et-text font-medium">Smart Shedding</div>
+            <div className="flex flex-wrap gap-2">
               {[
                 { id: 'none', label: 'Без змін' },
                 { id: 'showcase', label: 'Пауза вітрини' },
@@ -315,8 +315,8 @@ export function Simulation() {
                 </button>
               ))}
             </div>
-            <ArrowRight className="text-et-border ml-auto" size={16} />
-            <div className="text-sm text-et-text w-[220px]">
+            <ArrowRight className="text-et-border ml-auto hidden lg:block" size={16} />
+            <div className="text-sm text-et-text lg:w-[220px]">
               Економія заряду: <span className="font-space font-medium text-et-success">{sheddingReduction > 0 ? `-${sheddingReduction.toFixed(2)} кВт` : '0 кВт'}</span>
             </div>
           </div>
@@ -331,9 +331,9 @@ export function Simulation() {
       </div>
 
       {/* Sustainability Card */}
-      <div className="mt-6 bg-et-bg border border-et-success/40 rounded-2xl p-6">
+      <div className="mt-6 bg-et-bg border border-et-success/40 rounded-2xl p-4 lg:p-6">
         <div className="text-et-success text-xs font-bold tracking-widest uppercase mb-4">🌱 Сталий ефект</div>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 lg:gap-4">
           <div className="bg-et-card border border-et-border rounded-xl p-4 flex items-start gap-3">
             <Fuel className="text-et-success shrink-0 mt-0.5" size={18} />
             <div>

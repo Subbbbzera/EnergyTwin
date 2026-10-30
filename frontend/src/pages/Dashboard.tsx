@@ -1,7 +1,9 @@
 import { ChevronDown, MapPin, Bell, ArrowRight } from 'lucide-react';
 import { ForecastFeedback } from '../components/feedback/ForecastFeedback';
+import { HeroAB } from '../components/HeroAB';
+import { track } from '../lib/analytics';
 
-export function Dashboard() {
+export function Dashboard({ onOpenSimulation }: { onOpenSimulation: () => void }) {
   return (
     <div className="flex-1 overflow-auto bg-et-bg p-4 lg:p-8">
       {/* Header */}
@@ -27,6 +29,8 @@ export function Dashboard() {
         </div>
       </header>
 
+      <HeroAB onCta={onOpenSimulation} />
+
       {/* Red Banner */}
       <div className="bg-et-danger/10 border border-et-danger/45 rounded-2xl p-4 mb-6 flex flex-col lg:flex-row gap-4 justify-between lg:items-center">
         <div>
@@ -37,7 +41,7 @@ export function Dashboard() {
           </div>
           <ForecastFeedback />
         </div>
-        <button className="bg-et-accent text-et-bg font-medium px-5 py-2.5 rounded-[10px] flex items-center justify-center gap-2 hover:bg-[#F5B700]/90 transition-colors shrink-0">
+        <button onClick={() => { track('banner_simulator_click'); onOpenSimulation(); }} className="bg-et-accent text-et-bg font-medium px-5 py-2.5 rounded-[10px] flex items-center justify-center gap-2 hover:bg-[#F5B700]/90 transition-colors shrink-0">
           Відкрити симулятор <ArrowRight size={18} />
         </button>
       </div>

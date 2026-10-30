@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { X, Send, CheckCircle2 } from 'lucide-react';
 import { FEEDBACK_FORM_URL } from '../../config';
+import { track } from '../../lib/analytics';
 import { addFeedback, clearFeedback, getFeedbackStats, type FeedbackEntry } from '../../lib/feedback';
 
 interface FeedbackModalProps {
@@ -49,6 +50,7 @@ export function FeedbackModal({ page, onClose }: FeedbackModalProps) {
       comment: `Незрозуміло: ${unclear.trim() || '—'} | Не вистачає: ${missing.trim() || '—'}`,
       page,
     });
+    track('general_feedback', { business_type: businessType || 'Не вказано', unclear: unclear.trim(), missing: missing.trim(), page });
     setBusinessType('');
     setUnclear('');
     setMissing('');
@@ -118,7 +120,7 @@ export function FeedbackModal({ page, onClose }: FeedbackModalProps) {
         )}
 
         <div className="mt-3 text-center">
-          <a href={FEEDBACK_FORM_URL} target="_blank" rel="noopener noreferrer" className="text-xs text-et-muted underline hover:text-et-accent transition-colors">
+          <a href={FEEDBACK_FORM_URL} onClick={() => track('google_form_click')} target="_blank" rel="noopener noreferrer" className="text-xs text-et-muted underline hover:text-et-accent transition-colors">
             Повна анкета (Google Form)
           </a>
         </div>

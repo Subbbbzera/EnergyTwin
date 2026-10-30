@@ -1,9 +1,10 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Menu, Zap } from 'lucide-react';
 import { Sidebar } from './components/layout/Sidebar';
 import { Dashboard } from './pages/Dashboard';
 import { Simulation } from './pages/Simulation';
 import { FeedbackModal } from './components/feedback/FeedbackModal';
+import { track } from './lib/analytics';
 import './index.css';
 
 function App() {
@@ -11,6 +12,11 @@ function App() {
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const closeFeedback = useCallback(() => setFeedbackOpen(false), []);
+  const openSimulation = useCallback(() => setActiveTab('simulation'), []);
+
+  useEffect(() => {
+    track('tab_view', { tab: activeTab });
+  }, [activeTab]);
 
   return (
     <div className="flex flex-col lg:flex-row h-dvh bg-et-bg text-et-text overflow-hidden">
@@ -28,12 +34,12 @@ function App() {
       <Sidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        onFeedbackClick={() => setFeedbackOpen(true)}
+        onFeedbackClick={() => { track('feedback_open', { page: activeTab }); setFeedbackOpen(true); }}
         mobileOpen={menuOpen}
         onMobileClose={() => setMenuOpen(false)}
       />
       {feedbackOpen && <FeedbackModal page={activeTab} onClose={closeFeedback} />}
-      {activeTab === 'dashboard' && <Dashboard />}
+      {activeTab === 'dashboard' && <Dashboard onOpenSimulation={openSimulation} />}
       {activeTab === 'simulation' && <Simulation />}
 
       {activeTab !== 'dashboard' && activeTab !== 'simulation' && (

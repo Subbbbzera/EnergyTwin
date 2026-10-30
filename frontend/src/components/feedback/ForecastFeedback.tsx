@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { addFeedback, getLastForecastVote } from '../../lib/feedback';
+import { track } from '../../lib/analytics';
 
 type Vote = 'up' | 'down';
 
@@ -10,6 +11,7 @@ export function ForecastFeedback() {
     if (vote === v) return;
     setVote(v);
     addFeedback({ type: 'forecast', value: v, comment: '', page: 'dashboard' });
+    track('forecast_vote', { vote: v });
   };
 
   return (

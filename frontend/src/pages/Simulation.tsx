@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Play, ArrowRight, Lightbulb, Fuel, Leaf, Users } from 'lucide-react';
 import { SimulationFeedback } from '../components/feedback/SimulationFeedback';
+import { ecoVariant, track } from '../lib/analytics';
 
 export function Simulation() {
   const [startTime, setStartTime] = useState<number>(14);
@@ -12,6 +13,8 @@ export function Simulation() {
   const [addedGen, setAddedGen] = useState<number>(0);
   const [shedding, setShedding] = useState<string>('none');
   const [simRun, setSimRun] = useState<boolean>(false);
+  const [ecoVote, setEcoVote] = useState<string | null>(null);
+  const showEco = ecoVariant === 'on';
 
   // Logic
   const baseBattery = 2.0;
@@ -98,7 +101,7 @@ export function Simulation() {
               {[12, 14, 16, 18].map(t => (
                 <button 
                   key={t}
-                  onClick={() => setStartTime(t)}
+                  onClick={() => { setStartTime(t); track('scenario_change', { param: 'start', value: t }); }}
                   className={`flex-1 py-2 rounded-[10px] text-sm font-space transition-colors ${startTime === t ? 'bg-et-accent text-et-bg font-bold' : 'bg-et-block text-et-muted hover:text-et-text'}`}
                 >
                   {t}:00
@@ -113,7 +116,7 @@ export function Simulation() {
               {[2, 4, 6, 8].map(d => (
                 <button 
                   key={d}
-                  onClick={() => setDuration(d)}
+                  onClick={() => { setDuration(d); track('scenario_change', { param: 'duration', value: d }); }}
                   className={`flex-1 py-2 rounded-[10px] text-sm font-space transition-colors ${duration === d ? 'bg-et-block border border-et-border text-et-text font-bold' : 'text-et-muted hover:text-et-text border border-transparent'}`}
                 >
                   {d} год
@@ -134,14 +137,14 @@ export function Simulation() {
               </label>
               <label className="flex items-center justify-between bg-et-block p-3 rounded-[10px] cursor-pointer hover:border-et-border border border-transparent transition-colors">
                 <div className="flex items-center gap-3">
-                  <input type="checkbox" checked={highOn} onChange={(e) => setHighOn(e.target.checked)} className="accent-et-accent w-4 h-4 rounded cursor-pointer" />
+                  <input type="checkbox" checked={highOn} onChange={(e) => { setHighOn(e.target.checked); track('scenario_change', { param: 'high', value: e.target.checked }); }} className="accent-et-accent w-4 h-4 rounded cursor-pointer" />
                   <span className="text-sm font-medium">HIGH</span>
                 </div>
                 <span className="text-sm font-space text-et-muted">0.34 кВт</span>
               </label>
               <label className="flex items-center justify-between bg-et-block p-3 rounded-[10px] cursor-pointer hover:border-et-border border border-transparent transition-colors">
                 <div className="flex items-center gap-3">
-                  <input type="checkbox" checked={lowOn} onChange={(e) => setLowOn(e.target.checked)} className="accent-et-accent w-4 h-4 rounded cursor-pointer" />
+                  <input type="checkbox" checked={lowOn} onChange={(e) => { setLowOn(e.target.checked); track('scenario_change', { param: 'low', value: e.target.checked }); }} className="accent-et-accent w-4 h-4 rounded cursor-pointer" />
                   <span className="text-sm font-medium">LOW</span>
                 </div>
                 <span className="text-sm font-space text-et-muted">0.5 кВт</span>
@@ -149,7 +152,7 @@ export function Simulation() {
             </div>
           </div>
 
-          <button onClick={() => setSimRun(true)} className="w-full bg-et-accent text-et-bg font-bold py-3.5 rounded-[10px] flex justify-center items-center gap-2 hover:bg-[#F5B700]/90 transition-colors">
+          <button onClick={() => { setSimRun(true); track('simulation_run', { start: startTime, duration, high: highOn, low: lowOn, enough: isEnough }); }} className="w-full bg-et-accent text-et-bg font-bold py-3.5 rounded-[10px] flex justify-center items-center gap-2 hover:bg-[#F5B700]/90 transition-colors">
             <Play size={18} fill="currentColor" />
             Запустити симуляцію
           </button>
@@ -273,7 +276,7 @@ export function Simulation() {
             <div className="lg:w-[140px] text-sm text-et-text font-medium">+ Батарея LiFePO4</div>
             <div className="flex flex-wrap gap-2">
               {[0, 2.5, 5, 10].map(v => (
-                <button key={v} onClick={() => setAddedBat(v)} className={`px-4 py-1.5 rounded-md text-sm transition-colors border ${addedBat === v ? 'bg-et-accent border-et-accent text-et-bg font-medium' : 'bg-et-block border-et-border text-et-muted hover:text-et-text'}`}>
+                <button key={v} onClick={() => { setAddedBat(v); track('whatif_battery', { value: v }); }} className={`px-4 py-1.5 rounded-md text-sm transition-colors border ${addedBat === v ? 'bg-et-accent border-et-accent text-et-bg font-medium' : 'bg-et-block border-et-border text-et-muted hover:text-et-text'}`}>
                   {v === 0 ? 'Без' : `+${v}`}
                 </button>
               ))}
@@ -289,7 +292,7 @@ export function Simulation() {
             <div className="lg:w-[140px] text-sm text-et-text font-medium">+ Генератор</div>
             <div className="flex flex-wrap gap-2">
               {[0, 3.0, 5.5].map(v => (
-                <button key={v} onClick={() => setAddedGen(v)} className={`px-4 py-1.5 rounded-md text-sm transition-colors border ${addedGen === v ? 'bg-et-accent border-et-accent text-et-bg font-medium' : 'bg-et-block border-et-border text-et-muted hover:text-et-text'}`}>
+                <button key={v} onClick={() => { setAddedGen(v); track('whatif_generator', { value: v }); }} className={`px-4 py-1.5 rounded-md text-sm transition-colors border ${addedGen === v ? 'bg-et-accent border-et-accent text-et-bg font-medium' : 'bg-et-block border-et-border text-et-muted hover:text-et-text'}`}>
                   {v === 0 ? 'Немає' : `${v} кВт`}
                 </button>
               ))}
@@ -310,7 +313,7 @@ export function Simulation() {
                 { id: 'grinder', label: 'Гриндер на вимогу' },
                 { id: 'both', label: 'Обидва' }
               ].map(opt => (
-                <button key={opt.id} onClick={() => setShedding(opt.id)} className={`px-4 py-1.5 rounded-md text-sm transition-colors border ${shedding === opt.id ? 'bg-et-accent border-et-accent text-et-bg font-medium' : 'bg-et-block border-et-border text-et-muted hover:text-et-text'}`}>
+                <button key={opt.id} onClick={() => { setShedding(opt.id); track('smart_shedding_select', { option: opt.id }); }} className={`px-4 py-1.5 rounded-md text-sm transition-colors border ${shedding === opt.id ? 'bg-et-accent border-et-accent text-et-bg font-medium' : 'bg-et-block border-et-border text-et-muted hover:text-et-text'}`}>
                   {opt.label}
                 </button>
               ))}
@@ -330,7 +333,8 @@ export function Simulation() {
         </div>
       </div>
 
-      {/* Sustainability Card */}
+      {/* Sustainability Card — A/B: бачить лише група eco=on */}
+      {showEco && (
       <div className="mt-6 bg-et-bg border border-et-success/40 rounded-2xl p-4 lg:p-6">
         <div className="text-et-success text-xs font-bold tracking-widest uppercase mb-4">🌱 Сталий ефект</div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 lg:gap-4">
@@ -357,8 +361,24 @@ export function Simulation() {
             </div>
           </div>
         </div>
-        <div className="text-xs text-et-muted mt-4">Орієнтовний розрахунок для прототипу</div>
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mt-4">
+          <div className="text-xs text-et-muted">Орієнтовний розрахунок для прототипу</div>
+          <div className="flex flex-wrap items-center gap-2 text-sm">
+            <span className={ecoVote ? 'text-et-text' : 'text-et-muted'}>{ecoVote ? 'Дякуємо за відповідь!' : 'Чи важливий для вас цей ефект під час вибору резерву?'}</span>
+            {[
+              { id: 'yes', label: 'Так' },
+              { id: 'neutral', label: 'Байдуже' },
+              { id: 'no', label: 'Ні' },
+            ].map(o => (
+              <button key={o.id} disabled={ecoVote !== null} onClick={() => { setEcoVote(o.id); track('eco_reaction', { answer: o.id }); }}
+                className={`px-3 py-1 rounded-md text-sm transition-colors border ${ecoVote === o.id ? 'bg-et-success border-et-success text-et-bg font-medium' : 'bg-et-block border-et-border text-et-muted hover:text-et-text'}`}>
+                {o.label}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
+      )}
     </div>
   );
 }
